@@ -12,6 +12,11 @@ Very simple ray tracing library
 - Saving result in JPEG
 - Loading scene from file
 
+## OpenMP added
+
+ - was implemented ''' #pragma omp parallel for ... ''' in file src/test/minirt_test.cpp
+ - was changed CMakeLists.txt in same directory
+
 ## Installation
 
 ### With CMake
