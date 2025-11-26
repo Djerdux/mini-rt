@@ -1,5 +1,5 @@
 #include "minirt/minirt.h"
-
+#include <omp.h>
 #include <cmath>
 #include <iostream>
 
@@ -67,12 +67,19 @@ int main(int argc, char **argv) {
                          viewPlaneSizeX, viewPlaneSizeY, viewPlaneDistance};
 
     Image image(viewPlaneResolutionX, viewPlaneResolutionY); // computed image
+    
+    double start = omp_get_wtime();
+    // omp_set_num_threads(12);
+    #pragma omp parallel for schedule(dynamic)
     for(int x = 0; x < viewPlaneResolutionX; x++)
     for(int y = 0; y < viewPlaneResolutionY; y++) {
         const auto color = viewPlane.computePixel(scene, x, y, numOfSamples);
         image.set(x, y, color);
     }
+    double end = omp_get_wtime();
+    double execution_time = end - start;
 
+    std::cout << execution_time << std::endl;
     image.saveJPEG("raytracing.jpg");
 
     return 0;
